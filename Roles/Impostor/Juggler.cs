@@ -1,4 +1,4 @@
-/*using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using AmongUs.GameOptions;
@@ -9,19 +9,23 @@ using TownOfHost.Roles.Core.Interfaces;
 
 namespace TownOfHost.Roles.Impostor;
 
-public sealed class Camouflager : RoleBase, IImpostor, IUsePhantomButton
+public sealed class Juggler : RoleBase, IImpostor, IUsePhantomButton
 {
     public static readonly SimpleRoleInfo RoleInfo = SimpleRoleInfo.Create(
-        typeof(Camouflager),
-        player => new Camouflager(player),
-        CustomRoles.Camouflager,
+        typeof(Juggler),
+        player => new Juggler(player),
+        CustomRoles.Juggler,
         () => RoleTypes.Phantom,
         CustomRoleTypes.Impostor,
         127300,
         SetupOptionItem,
-        "Mo",
+        "jug",
         OptionSort: (6, 0),
-        from: From.TheOtherRoles
+        from: From.TheOtherRoles,
+        assignInfo: new RoleAssignInfo(CustomRoles.Juggler, CustomRoleTypes.Impostor)
+        {
+            IsInitiallyAssignableCallBack = () => Main.NormalOptions.MapId is not 5
+        }
     );
 
     private static OptionItem OptionKillCoolDown;
@@ -31,18 +35,20 @@ public sealed class Camouflager : RoleBase, IImpostor, IUsePhantomButton
     public static bool NowUse { get; set; }
 
     private float _limit;
-    private readonly List<byte> _ventPlayers = new();
+    HashSet<byte> ShapeShiftedPlayer = new();
+    HashSet<byte> JPlayer = new();
 
     private enum OptionName
     {
-        GhostNoiseSenderTime // 効果時間って翻訳一緒なので・・・
+        GhostNoiseSenderTime 
     }
 
-    public Camouflager(PlayerControl player) : base(RoleInfo, player)
+    public Juggler(PlayerControl player) : base(RoleInfo, player)
     {
         NowUse = false;
         _limit = -50;
-        _ventPlayers.Clear();
+        ShapeShiftedPlayer.Clear();
+        JPlayer.Clear();
     }
 
     private static void SetupOptionItem()
@@ -69,8 +75,77 @@ public sealed class Camouflager : RoleBase, IImpostor, IUsePhantomButton
         {
             _limit = -100;
             NowUse = false;
-            PlayerCatch.AllPlayerControls.Do(pc => Camouflage.RpcSetSkin(pc, force: null));
-            foreach (var pl in PlayerCatch.AllPlayerControls)
+            ResetCamouflage(false);
+
+            _ = new LateTask(() =>
+            {
+                if (GameStates.CalledMeeting) return;
+
+                ResetCamouflage(true);
+                UtilsNotifyRoles.NotifyRoles(ForceLoop: true);
+            }, 0.4f, "", true);
+        }
+    }
+
+    public override void OnReportDeadBody(PlayerControl reporter, NetworkedPlayerInfo target)
+    {
+        NowUse = false;
+        _limit = -50;
+        ShapeShiftedPlayer.Clear();
+        JPlayer.Clear();
+    }
+
+    public override bool NotifyRolesCheckOtherName => true;
+
+    public void OnClick(ref bool AdjustKillCooldown, ref bool? ResetCooldown)
+    {
+        AdjustKillCooldown = true;
+        ResetCooldown = false;
+        if (NowUse) return;
+        ResetCooldown = true;
+
+        Camouflage();
+
+        _ = new LateTask(() =>
+        {
+            UtilsNotifyRoles.NotifyRoles(ForceLoop: true);
+        }, 0.2f, "", true);
+    }
+    void Camouflage()
+    {
+        foreach (var pl in PlayerCatch.AllAlivePlayerControls)
+        {
+            if (Main.ShapeshiftTarget.TryGetValue(pl.PlayerId, out byte targetId) && targetId != pl.PlayerId)
+            {
+                ShapeShiftedPlayer.Add(pl.PlayerId);
+            }
+            PlayerControl target = PlayerCatch.AllAlivePlayerControls
+                .Where(p => p != pl)
+                .Where(p => !JPlayer.Contains(p.PlayerId)) 
+                .OrderBy(_ => UnityEngine.Random.value) // ランダムにシャッフル
+                .FirstOrDefault(); // 先頭の1人を取得（いなければnull）
+
+            JPlayer.Add(target.PlayerId);
+            if (target != null && !ShapeShiftedPlayer.Contains(pl.PlayerId))
+            {
+                pl.RpcShapeshift(target, false);
+                var sender = CustomRpcSender.Create("CamouflagerShape");
+                sender.AutoStartRpc(pl.NetId, RpcCalls.Shapeshift)
+                    .Write(target)
+                    .Write(false)
+                    .EndRpc();
+                sender.EndMessage();
+                sender.SendMessage();
+            }
+        }
+        _limit = OptionAblitytime.GetFloat();
+        NowUse = true;
+    }
+    void ResetCamouflage(bool reset)
+    {
+        foreach (var pl in PlayerCatch.AllAlivePlayerControls)
+        {
+            if (!ShapeShiftedPlayer.Contains(pl.PlayerId))
             {
                 pl.RpcShapeshift(pl, false);
                 var sender = CustomRpcSender.Create("CamouflagerShape");
@@ -81,66 +156,13 @@ public sealed class Camouflager : RoleBase, IImpostor, IUsePhantomButton
                 sender.EndMessage();
                 sender.SendMessage();
             }
-            _ = new LateTask(() =>
-            {
-                if (GameStates.CalledMeeting) return;
-
-                // しゅーりょー
-                foreach (var pl in PlayerCatch.AllPlayerControls)
-                {
-                    pl.RpcShapeshift(pl, false);
-                    var sender = CustomRpcSender.Create("CamouflagerShape");
-                    sender.AutoStartRpc(pl.NetId, RpcCalls.Shapeshift)
-                        .Write(pl)
-                        .Write(false)
-                        .EndRpc();
-                    sender.EndMessage();
-                    sender.SendMessage();
-                }
-
-                UtilsNotifyRoles.NotifyRoles(ForceLoop: true);
-                Player.RpcResetAbilityCooldown(log: false, Sync: true);
-            }, 0.4f, "", true);
         }
-    }
-
-    public override void OnReportDeadBody(PlayerControl reporter, NetworkedPlayerInfo target)
-    {
-        NowUse = false;
-        _limit = -50;
-        _ventPlayers.Clear();
-    }
-
-    public override bool NotifyRolesCheckOtherName => true;
-
-    public void OnClick(ref bool AdjustKillCooldown, ref bool? ResetCooldown)
-    {
-        AdjustKillCooldown = true;
-        ResetCooldown = true;
-        if (NowUse) return;
-
-        var dummy = PlayerCatch.AllPlayerControls.FirstOrDefault(pc => pc != null) ?? PlayerCatch.GetPlayerById(0);
-
-        // かもふら
-        foreach (var pl in PlayerCatch.AllPlayerControls)
+        if (reset)
         {
-            pl.RpcShapeshift(dummy, false);
-            var sender = CustomRpcSender.Create("CamouflagerShape");
-            sender.AutoStartRpc(pl.NetId, RpcCalls.Shapeshift)
-                .Write(dummy)
-                .Write(false)
-                .EndRpc();
-            sender.EndMessage();
-            sender.SendMessage();
+            ShapeShiftedPlayer.Clear();
+            JPlayer.Clear();
+            Player.RpcResetAbilityCooldown(log: false, Sync: true);
         }
-
-        _limit = OptionAblitytime.GetFloat();
-        NowUse = true;
-
-        _ = new LateTask(() =>
-        {
-            UtilsNotifyRoles.NotifyRoles(ForceLoop: true);
-        }, 0.2f, "", true);
     }
 
     public float CalculateKillCooldown() => OptionKillCoolDown.GetFloat();
@@ -164,4 +186,3 @@ public sealed class Camouflager : RoleBase, IImpostor, IUsePhantomButton
 
     bool IUsePhantomButton.IsresetAfterKill => false;
 }
-*/

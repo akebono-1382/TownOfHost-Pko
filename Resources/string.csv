@@ -103,6 +103,7 @@
 "Siren","Siren","セイレーン"
 "Soulbinder","Soul binder","ソウルバインダー"
 "SoulSlave","Soul Slave","ソウルスレイブ"
+"Juggler","Juggler","ジャグラー"
 "#ImpostorName"
 
 "# マッドメイト系役職"
@@ -526,6 +527,7 @@
 "SoulbinderInfo","Bind the soul and enslave it","魂を縛りつけ隷属させよ"
 "SoulSlaveInfo","Those Whose Souls Are Bound","魂を縛られし者"
 "ConjurerInfo","Encirclement that extinguishes all lights","灯火吹き消す包囲陣"
+"JugglerInfo","Shuffle to shake up the board","シャッフルで盤面をかき乱せ"
 "#ImpostorInfo"
 
 "# マッドメイト系役職"
@@ -899,6 +901,7 @@
 "SoulbinderInfoLong","The player who makes the first kill becomes a <#ff1919>Soul Slave</color>.","最初にキルしたプレイヤーの役職が<#ff1919>ソウルスレイブ</color>になる。"
 "SoulSlaveInfoLong","Ghost role created by the <#ff1919>Soul Binder</color>\nThe original victory condition is removed, and tasks are redistributed.\nEach time a task is completed, the kill cooldown of the <#ff1919>Soul Binder</color> who killed the player is reduced by the set value. \nWhen you press the Guardian Angel button, an arrow appears from the <#ff1919>Soul Binder</color>’s perspective pointing at the target for a certain amount of time, but once the direction is set, it does not change.","<#ff1919>ソウルバインダー</color>により作成された幽霊役職\n元の勝利条件は消え、タスクが再配布される。\nタスクを一つ完了するごとに自身をキルした<#ff1919>ソウルバインダー</color>のキルクールが設定値短縮される。\n守護天使ボタンを押すと押した対象に<#ff1919>ソウルバインダー</color>視点で一定時間矢印が表示されるが、一度方向を指示した後は方向は変わらない。"
 "ConjurerInfoLong","Use the Phantom Button to place beacons. \nIf you press the Phantom Button after placing three beacons, it will kill all players within the triangular area formed by the three beacons. \nYou cannot perform normal kills.","ファントムボタンを使用してビーコンを設置する。\nビーコンを三つ設置した状態でファントムボタンを押すと、三つのビーコンを結んでできる三角形の範囲内にいるプレイヤーを全てキルする。\n通常キルを行うことはできない。"
+"JugglerInfoLong","When you press the Phantom Button, everyone's appearance is shuffled for a certain amount of time. \nPlayers who are currently shape-shifting will not have their appearance changed.","ファントムボタンを押すと、一定時間全員の姿がシャッフルされる。\nシェイプシフト中のプレイヤーの姿は変わらない。"
 
 "#ImpostorInfoLong"
 
