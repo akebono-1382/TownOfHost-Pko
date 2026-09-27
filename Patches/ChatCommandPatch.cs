@@ -196,7 +196,7 @@ namespace TownOfHost
                     target.RpcSetCustomRole(role, true, true);
                     RPC.RpcSyncAllNetworkedPlayer();
                     var rolenameIngame = ColorString(GetRoleColor(role), GetString($"{role}"));
-                    SendMessage($"{UtilsName.GetPlayerColor(target, true)}の役職を{rolenameIngame}にするよっ!!", sender.PlayerId);
+                    SendMessage($"{GetSafePlayerColorText(target)}の役職を{rolenameIngame}にするよっ!!", sender.PlayerId);
                     Logger.Info($"/cmd cr: {sender.GetNameWithRole().RemoveHtmlTags()} changed {target.GetNameWithRole().RemoveHtmlTags()} to {role}", "ChatCommand");
                 }
                 else
@@ -204,19 +204,36 @@ namespace TownOfHost
                     if (role.IsAddOn() || role.IsGhostRole() || role.IsLovers()) return;
                     Main.ChangeRoles[target.PlayerId] = role;
                     var rolename = ColorString(GetRoleColor(role), GetString($"{role}"));
-                    SendMessage($"{UtilsName.GetPlayerColor(target, true)}の役職を{rolename}にするよっ!!", sender.PlayerId);
+                    SendMessage($"{GetSafePlayerColorText(target)}の役職を{rolename}にするよっ!!", sender.PlayerId);
                     Logger.Info($"/cmd cr(lobby): {sender.GetNameWithRole().RemoveHtmlTags()} set {target.GetNameWithRole().RemoveHtmlTags()} fixed role to {role}", "ChatCommand");
                 }
             }
             else
             {
-                if (Main.ChangeRoles[target.PlayerId] == CustomRoles.NotAssigned)
+                // 未登録キーでも例外を出さないようTryGetValueに変更
+                if (!Main.ChangeRoles.TryGetValue(target.PlayerId, out var currentFixed) || currentFixed == CustomRoles.NotAssigned)
+                {
                     SendMessage("役職変更に失敗したよ(´・ω・｀)", sender.PlayerId);
+                }
                 else
                 {
                     Main.ChangeRoles[target.PlayerId] = CustomRoles.NotAssigned;
                     SendMessage("役職固定をリセットしたよっ!", sender.PlayerId);
                 }
+            }
+        }
+
+        // UtilsName.GetPlayerColorが未登録キーで例外を投げる環境向けの安全ラッパー
+        private static string GetSafePlayerColorText(PlayerControl player)
+        {
+            try
+            {
+                return UtilsName.GetPlayerColor(player, true);
+            }
+            catch (KeyNotFoundException)
+            {
+                // まだ色データが登録されていない場合はプレーンな名前にフォールバック
+                return player.Data?.PlayerName ?? player.name;
             }
         }
         private static bool IsHostRenameSender(PlayerControl sender)
@@ -1929,6 +1946,12 @@ namespace TownOfHost
                         canceled = true;
                         ExecuteRoleChangeCommand(PlayerControl.LocalPlayer, args);
                         break;
+                    case "/crr":
+                        canceled = true;
+                        Main.ChangeRoles.Clear();
+                        SendMessage("全プレイヤーの役職固定をリセットしました。");
+
+                        break;
                     case "/st":
                     case "/setteam":
 
@@ -2298,8 +2321,10 @@ namespace TownOfHost
                     ExecuteReviveCommand(player, args);
                     break;
 
-                case "/cr":
-                    ExecuteRoleChangeCommand(player, args);
+                case "/crr":
+                    Main.ChangeRoles.Clear();
+                    SendMessage("全プレイヤーの役職固定をリセットしました。");
+
                     break;
 
                 case "/ruler":

@@ -1321,6 +1321,10 @@ public enum CustomRoles
     Jizo,
     Fanatic,
     Hunter,
+    Stray,
+    Hero,
+    Sinner,
+    Mourner,
     //DEBUG only Crewmate
     Analyzer,
     //Neutral

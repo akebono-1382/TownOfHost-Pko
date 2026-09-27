@@ -165,6 +165,15 @@ namespace TownOfHost
         CustomRoles.Vega or CustomRoles.Altair or
         CustomRoles.Abuser or CustomRoles.Victim or
         CustomRoles.Fool or CustomRoles.Nue;
+        public static bool IsAssassinStylePair(this CustomRoles role) => role is
+        CustomRoles.Assassin or CustomRoles.Merlin or
+        CustomRoles.Driver or CustomRoles.Braid or
+        CustomRoles.Vega or CustomRoles.Altair or
+        CustomRoles.Abuser or CustomRoles.Victim or
+        CustomRoles.Fool or CustomRoles.Nue or
+        CustomRoles.Soulbinder or CustomRoles.SoulSlave or
+        CustomRoles.Stray or CustomRoles.Hero or CustomRoles.Sinner or CustomRoles.Mourner;
+
         public static CustomRoles GetCombination(this CustomRoles role)
         {
             if (role.IsCombinationRole() is false) return CustomRoles.NotAssigned;

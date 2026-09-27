@@ -661,7 +661,7 @@ namespace TownOfHost
 
             RoleAssignManager.SetupOptionItem();
             WinOption.SetupCustomOption();
-            ObjectOptionitem.Create(1_000_124, "RoleOption", true, null, TabGroup.MainSettings).SetOptionName(() => "Role Setting").SetTag(CustomOptionTags.Role).SetEnabled(() => GameSettingMenuStartPatch.NowRoleTab is not CustomRoles.NotAssigned);
+            ObjectOptionitem.Create(1_000_124, "RoleOption", true, null, TabGroup.MainSettings).SetOptionName(() => "Role Setting").SetTag(CustomOptionTags.Role).SetEnabled(() => (GameSettingMenuStartPatch.NowRoleTab != CustomRoles.NotAssigned && GameSettingMenuStartPatch.NowRoleTab != CustomRoles.Soulbinder && GameSettingMenuStartPatch.NowRoleTab != CustomRoles.Stray));
             //タスクバトル
             TaskBattle.SetupOptionItem();
             //最初のオプションのみここ

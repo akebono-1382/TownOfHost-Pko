@@ -372,7 +372,7 @@ namespace TownOfHost
                 ProgressText.Append(GetKenzokuProggress());
             }
             //単独キラー陣営のヴァニティはタスクを出さない
-            if (!player.Is(CustomRoles.Vanity))
+            if (!player.Is(CustomRoles.Vanity) && !player.Is(CustomRoles.Stray))
             {
                 ProgressText.Append(GetTaskProgressText(playerId, comms, ShowManegementText, hide));
             }

@@ -475,6 +475,10 @@ namespace TownOfHost
             //自視点以外当たり判定が変わらないから霊界だと挙動不審になる。
             if (player == null) return;
 
+            if (player.GetCustomRole() is CustomRoles.Hero && Stray.OptHeroFlash.GetBool())
+            {
+                Utils.AllPlayerKillFlash();
+            }
             if (!Utils.IsRestriction())
             {
                 player.RpcExileV2();

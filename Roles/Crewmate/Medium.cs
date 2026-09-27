@@ -124,6 +124,7 @@ public sealed class Medium : RoleBase
 
     public override string GetProgressText(bool comms = false, bool gamelog = false)
     {
+        if (!awakened) return "";
         var canUse = Player.IsAlive() && RemainingCount > 0 && awakened;
         return Utils.ColorString(canUse ? Color.cyan : Color.gray, $"({RemainingCount})");
     }

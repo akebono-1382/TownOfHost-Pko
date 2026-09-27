@@ -113,6 +113,8 @@ namespace TownOfHost
         public static StringOption BaseOption;
         public static float roletaby;
         public static HashSet<TabGroup> tabGenerated;
+        static bool IsStrayGroup(CustomRoles r) =>
+            r is CustomRoles.Stray or CustomRoles.Hero or CustomRoles.Sinner or CustomRoles.Mourner;
 
         public static void Postfix(GameSettingMenu __instance)
         {
@@ -845,8 +847,12 @@ namespace TownOfHost
                                             case CustomRoles.PavlovOwner: if (Nowinfo is CustomRoles.PavlovOwner) Nowinfo = CustomRoles.PavlovDog; break;
                                             case CustomRoles.Soulbinder: if (Nowinfo is CustomRoles.Soulbinder) Nowinfo = CustomRoles.SoulSlave; break;
                                             case CustomRoles.SoulSlave: if (Nowinfo is CustomRoles.SoulSlave) Nowinfo = CustomRoles.Soulbinder; break;
+                                            case CustomRoles.Stray: if (IsStrayGroup(Nowinfo)) Nowinfo = CustomRoles.Hero; break;
+                                            case CustomRoles.Hero: if (IsStrayGroup(Nowinfo)) Nowinfo = CustomRoles.Sinner; break;
+                                            case CustomRoles.Sinner: if (IsStrayGroup(Nowinfo)) Nowinfo = CustomRoles.Mourner; break;
+                                            case CustomRoles.Mourner: if (IsStrayGroup(Nowinfo)) Nowinfo = CustomRoles.Stray; break;
                                         }
-                                        if (HudManager.Instance.TaskPanel.open && oldinfo.IsCombinationRole() && Nowinfo.IsCombinationRole())
+                                        if (HudManager.Instance.TaskPanel.open && oldinfo.IsAssassinStylePair() && Nowinfo.IsAssassinStylePair())
                                         {
                                             switch (oldinfo)
                                             {
@@ -860,6 +866,14 @@ namespace TownOfHost
                                                 case CustomRoles.Nue: if (Nowinfo is CustomRoles.Nue) Nowinfo = CustomRoles.Fool; break;
                                                 case CustomRoles.Abuser: if (Nowinfo is CustomRoles.Abuser) Nowinfo = CustomRoles.Victim; break;
                                                 case CustomRoles.Victim: if (Nowinfo is CustomRoles.Victim) Nowinfo = CustomRoles.Abuser; break;
+                                                case CustomRoles.PavlovDog: if (Nowinfo is CustomRoles.PavlovDog) Nowinfo = CustomRoles.PavlovOwner; break;
+                                                case CustomRoles.PavlovOwner: if (Nowinfo is CustomRoles.PavlovOwner) Nowinfo = CustomRoles.PavlovDog; break;
+                                                case CustomRoles.Soulbinder: if (Nowinfo is CustomRoles.Soulbinder) Nowinfo = CustomRoles.SoulSlave; break;
+                                                case CustomRoles.SoulSlave: if (Nowinfo is CustomRoles.SoulSlave) Nowinfo = CustomRoles.Soulbinder; break;
+                                                case CustomRoles.Stray: if (IsStrayGroup(Nowinfo)) Nowinfo = CustomRoles.Hero; break;
+                                                case CustomRoles.Hero: if (IsStrayGroup(Nowinfo)) Nowinfo = CustomRoles.Sinner; break;
+                                                case CustomRoles.Sinner: if (IsStrayGroup(Nowinfo)) Nowinfo = CustomRoles.Mourner; break;
+                                                case CustomRoles.Mourner: if (IsStrayGroup(Nowinfo)) Nowinfo = CustomRoles.Stray; break;
                                             }
                                             return;
                                         }

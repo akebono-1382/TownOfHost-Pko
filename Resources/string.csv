@@ -215,6 +215,10 @@
 "Fanatic","Fanatic","盲信者"
 "Hunter","Hunter","ハンター","猎人"
 "Gatekeeper","Gatekeeper","ゲートキーパー","守门人","守門人","Страж Врат","Guardião do Portão","Guardião do Portão"
+"Stray","The Stray","迷者"
+"Hero","Hero","英雄"
+"Sinner","Sinner","罪人"
+"Mourner","Mourner","弔人"
 "#CrewmateName"
 
 "# ニュートラル役職"
@@ -633,6 +637,10 @@
 "FanaticInfo","Believing in a False Lord","偽りの主を信じて"
 "HunterInfo","Let's kill the suspicious person","怪しい人を斬ろう","让我们杀死可疑的人"
 "GatekeeperInfo","Let's start the patrol!","見回り開始！"
+"StrayInfo","I want to become someone...","何者かになりたくて..."
+"HeroInfo","To Uphold Justice","正義を果たす為に"
+"SinnerInfo","To Bear the Guilt","罪を背負う為に"
+"MournerInfo","To Mourn a Life","命を悼む為に"
 "#CrewmateInfo"
 
 "# ニュートラル役職"
@@ -1142,6 +1150,7 @@
 "HunterDescTaskMode","The Hunter can kill any player. You can switch between Task Mode and Hunter Mode by petting your pet. \nThe Hunter's killing ability cannot be used while in Task Mode. \nYou cannot perform tasks while in Hunter Mode.\n","ハンターはすべてのプレイヤーを殺すことができる。ペットを撫でることでタスクモードとハンターモードを切り替えることが出来る。\nタスクモード中にはハンターのキル能力が使用できない。\nハンターモードではタスクが行えない。\n"
 "HunterDescNotask","The Hunter can kill any player.\n{","ハンターはすべてのプレイヤーを殺すことができる。タスクはない。\n"
 "HunterMark","<b>When you kill an imposter, a “◎” appears next to their name for a certain amount of time, and\nwhen you kill a neutral, a “▽” appears next to their name for a certain amount of time.</b>","<b>インポスターをキルした場合、名前の横に「◎」が一定時間表示され、\nニュートラルをキルした場合、名前の横に「▽」が一定時間表示される。</b>"
+"StrayDesc","",""
 
 "# NeutralDescInfos"
 "VultureDesc","By pressing the report button, you can eat on a dead body. {1}{0}\n\nBy completing tasks, you can see kill flashes and receive arrows pointing to bodies.\nBodies that were ate on that turn will be marked with <#6f4204>×</color> during meetings. {2}","通報ボタンを押すことで死体をつまみぐいする事ができる。{1}{0}\n\nタスクを行うことでキルフラッシュが見えたり、\n死体への矢印を受け取ることができる\nそのターンにつまみぐいされた死体は会議で<#6f4204>×</color>がつく。{2}"
@@ -2403,6 +2412,13 @@
 "HunterKnowTargetMadIsImpostor","MadMate Is Indicated By Imposter Determination.","マッドメイトはインポスター判定で表示する"
 "GatekeeperCanseeNoiseAllPlayer","Other people can hear the noise too","自分以外にもノイズが聞こえる"
 "GateKeepeeCanTeleport","If noise occurs, immediately teleport to the vent","ノイズが発生したら即座にベントに瞬間移動する"
+"Kill","Kill","キル","被杀","被殺","Убит","Abatido",""
+"Vote","Ejected","追放","放逐","被丟","Изгнан","Exilado",""
+"HeroKillFlash","Kill Flash on Death","死亡時のキルフラッシュ"
+"SinnerNeedToDeath","Death Required for Victory","勝利に死亡が必要か"
+"SinnerDeathType","Valid Victory Deaths","勝利条件を満たす死亡方法"
+"MournerDeadCount","Deaths Required to Become <#5f7285>Mourner</color","<#5f7285>弔人</color>に変化するクルー死亡数"
+"MournerSeeRoleCount","Max Role Checks","役職を知れる人数"
 
 "## Neutral Role Setting"
 "SchrodingerCatExiledTeamChanges","Team Changes When Ejected","吊られた際、陣営が変化する","薛定谔的猫被放逐时会加入其他阵营","薛定諤的貓被丟出時陣營會轉變","Команда меняется после его Изгнания","Time Muda Quando Exilado",""

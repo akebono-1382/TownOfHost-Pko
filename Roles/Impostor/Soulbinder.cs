@@ -68,11 +68,14 @@ public sealed class Soulbinder : RoleBase, IImpostor
 
     static void SetupOptionItem()
     {
+        ObjectOptionitem.Create(RoleInfo, 9, "Soulbinder", true, null).SetOptionName(() => "Soulbinder Setting").SetColor(RoleInfo.RoleColor);
         OptionKillCooldown = FloatOptionItem.Create(RoleInfo, 10, GeneralOption.KillCooldown, new(0f, 180f, 2.5f), 35f, false)
-            . SetValueFormat(OptionFormat.Seconds);
-        OptionMinKillCool = FloatOptionItem.Create(RoleInfo, 11, OptionName.HateKillerMinimumKillCool, new(0f, 180f, 2.5f), 20f, false)
             .SetValueFormat(OptionFormat.Seconds);
-        OptionDecreaseKillCool = FloatOptionItem.Create(RoleInfo, 12, OptionName.SoulbinderDecreaseKillCool, new(0.5f, 180f, 0.5f), 1f, false)
+        OptionMinKillCool = FloatOptionItem.Create(RoleInfo, 12, OptionName.HateKillerMinimumKillCool, new(0f, 180f, 2.5f), 20f, false)
+            .SetValueFormat(OptionFormat.Seconds);
+
+        ObjectOptionitem.Create(RoleInfo, 18, "Soulbinder", true, null).SetOptionName(() => "SoulSlave Setting").SetColor(SoulSlave.RoleInfo.RoleColor);
+        OptionDecreaseKillCool = FloatOptionItem.Create(RoleInfo, 11, OptionName.SoulbinderDecreaseKillCool, new(0.5f, 180f, 0.5f), 1f, false)
             .SetValueFormat(OptionFormat.Seconds);
         OptionSlaveAngelCool = FloatOptionItem.Create(RoleInfo, 13, OptionName.SoulbinderSlaveAngelCool, new(0.5f, 180f, 0.5f), 35f, false)
             .SetValueFormat(OptionFormat.Seconds);
