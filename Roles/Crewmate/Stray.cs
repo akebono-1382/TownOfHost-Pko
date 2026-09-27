@@ -269,7 +269,7 @@ public sealed class Sinner : RoleBase
                     }
                     return string.Format(GetString("SinnerDesc"), GetString("Kill"));
                 }
-                return string.Format(GetString("CrewmateInfoLong"));
+                return string.Format(GetString("SinnerDesc2"));
             },
             countType: CountTypes.None
         );

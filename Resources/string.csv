@@ -1155,6 +1155,7 @@
 "HeroDesc1","If the match ends before a hero has completed their task, that hero cannot win as part of the Crewmates' faction. \nA hero's task is not included in the Crewmates' tasks. \nUpon death, the hero's role is revealed to everyone."","タスクを終えていない状態で試合が終了した場合、英雄はクルーメイト陣営として勝利することができない。\n英雄のタスクはクルーメイトのタスクには含まれない。\n死亡時全員に自身の役職が公開される。"
 "HeroDesc2","If the match ends before the hero has completed their task, the hero cannot win as part of the Crewmates' faction. \nThe hero's task is not included in the Crewmates' tasks. \nUpon death, a kill flash visible to everyone appears, and the hero's role is revealed to all players.","タスクを終えていない状態で試合が終了した場合、英雄はクルーメイト陣営として勝利することができない。\n英雄のタスクはクルーメイトのタスクには含まれない。\n死亡時全員が視認できるキルフラッシュが発生し、全員に自身の役職が公開される。"
 "SinnerDesc","Unless you are <b>{0}ed</b>, you cannot win even if your crew wins.","<b>{0}</b>されないと、クルーが勝利しても自身は勝利できない。"
+"SinnerDesc2","An ordinary crewmate with no special abilities.\n There are no tasks.","特に能力を持たない通常のクルーメイト。\nタスクはない。"
 
 "# NeutralDescInfos"
 "VultureDesc","By pressing the report button, you can eat on a dead body. {1}{0}\n\nBy completing tasks, you can see kill flashes and receive arrows pointing to bodies.\nBodies that were ate on that turn will be marked with <#6f4204>×</color> during meetings. {2}","通報ボタンを押すことで死体をつまみぐいする事ができる。{1}{0}\n\nタスクを行うことでキルフラッシュが見えたり、\n死体への矢印を受け取ることができる\nそのターンにつまみぐいされた死体は会議で<#6f4204>×</color>がつく。{2}"
