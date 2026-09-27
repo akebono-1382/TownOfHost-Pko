@@ -193,7 +193,15 @@ public sealed class Hero : RoleBase
             SetupOptionItem,
             "her",
             "#ffd700",
-            (5, 6)
+            (5, 6),
+            Desc: () =>
+            {
+                if (Stray.OptHeroFlash.GetBool())
+                {
+                    return string.Format(GetString("HeroDesc2"));
+                }
+                return string.Format(GetString("HeroDesc1"));
+            }
         );
     public Hero(PlayerControl player)
     : base(
@@ -213,6 +221,8 @@ public sealed class Hero : RoleBase
     {
         if (Player.GetCustomRole() is CustomRoles.Hero && !MyTaskState.HasCompletedEnoughCountOfTasks(Stray.OptHeroNeedTaskCount.GetInt()))
         {
+            if (CustomWinnerHolder.WinnerTeam is not CustomWinner.Crewmate) return;
+
             CustomWinnerHolder.CantWinPlayerIds.Add(Player.PlayerId);
             CustomWinnerHolder.WinnerIds.Remove(Player.PlayerId);
         }
@@ -249,6 +259,18 @@ public sealed class Sinner : RoleBase
             "sir",
             "#4d0505",
             (5, 6),
+            Desc: () =>
+            {
+                if (Stray.OptionNeedToDead.GetBool())
+                {
+                    if (Stray.OptionDeathType.GetValue() is (int)Stray.DeathType.Vote)
+                    {
+                        return string.Format(GetString("SinnerDesc"), GetString("Vote"));
+                    }
+                    return string.Format(GetString("SinnerDesc"), GetString("Kill"));
+                }
+                return string.Format(GetString("CrewmateInfoLong"));
+            },
             countType: CountTypes.None
         );
     public Sinner(PlayerControl player)
@@ -305,8 +327,10 @@ public sealed class Sinner : RoleBase
     }
     public override void CheckWinner(GameOverReason reason)
     {
-        if (Player.GetCustomRole() is CustomRoles.Sinner)
+        if (Player.GetCustomRole() is CustomRoles.Sinner && CustomWinnerHolder.WinnerTeam is CustomWinner.Crewmate)
         {
+            if (CustomWinnerHolder.WinnerTeam is not CustomWinner.Crewmate) return;
+
             if (!Stray.OptionNeedToDead.GetBool()) return;
             if (Stray.OptionDeathType.GetValue() is (int)Stray.DeathType.Vote && !IsExiled)
             {
@@ -363,6 +387,8 @@ public sealed class Mourner : RoleBase
     {
         if (Player.GetCustomRole() is CustomRoles.Hero && !MyTaskState.HasCompletedEnoughCountOfTasks(Stray.OptNeedTaskCount.GetInt()))
         {
+            if (CustomWinnerHolder.WinnerTeam is not CustomWinner.Crewmate) return;
+
             CustomWinnerHolder.CantWinPlayerIds.Add(Player.PlayerId);
             CustomWinnerHolder.WinnerIds.Remove(Player.PlayerId);
         }
