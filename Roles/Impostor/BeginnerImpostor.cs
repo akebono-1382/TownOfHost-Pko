@@ -315,8 +315,8 @@ public sealed class BeginnerImpostor : RoleBase, IImpostor, IUsePhantomButton
 
     private BeginnerImpostorDummy GetNearestKillableDummy()
     {
-        float range = NormalGameOptionsV11.KillDistances[
-            Mathf.Clamp(OptionDummyKillRange.GetValue(), 0, NormalGameOptionsV11.KillDistances.Length - 1)];
+        float range = NormalGameOptionsV12.KillDistances[
+            Mathf.Clamp(OptionDummyKillRange.GetValue(), 0, NormalGameOptionsV12.KillDistances.Length - 1)];
         Vector2 origin = Player.GetTruePosition();
 
         return dummies

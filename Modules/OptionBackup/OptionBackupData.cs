@@ -8,6 +8,7 @@ namespace TownOfHost
     public class OptionBackupData
     {
         public List<OptionBackupValue> AllValues;
+        private readonly float? spiritGuideCooldown;
         public OptionBackupData(IGameOptions option)
         {
             AllValues = new(32);
@@ -37,10 +38,13 @@ namespace TownOfHost
             // TryGetUIntが実装されていないため、別で取得する
             AllValues.Add(new UIntOptionBackupValue(UInt32OptionNames.Keywords, (uint)option.Keywords));
 
-            foreach (RoleTypes role in new RoleTypes[] { RoleTypes.Scientist, RoleTypes.Engineer, RoleTypes.Noisemaker, RoleTypes.Tracker, RoleTypes.GuardianAngel, RoleTypes.Shapeshifter, RoleTypes.Phantom, RoleTypes.Detective, RoleTypes.Viper, RoleTypes.Judge })
+            foreach (RoleTypes role in new RoleTypes[] { RoleTypes.Scientist, RoleTypes.Engineer, RoleTypes.Noisemaker, RoleTypes.Tracker, RoleTypes.GuardianAngel, RoleTypes.Shapeshifter, RoleTypes.Phantom, RoleTypes.Detective, RoleTypes.Viper, RoleTypes.Judge, RoleTypes.SpiritGuide })
             {
                 AllValues.Add(new RoleRateBackupValue(role, option.RoleOptions.GetNumPerGame(role), option.RoleOptions.GetChancePerGame(role)));
             }
+            if (option.TryCast<NormalGameOptionsV12>(out var normalOptions) &&
+                normalOptions.roleOptions.TryGetRoleOptions(RoleTypes.SpiritGuide, out SpiritGuideRoleOptionsV12 roleOptions))
+                spiritGuideCooldown = roleOptions.SpiritGuideCooldownSeconds;
         }
 
         public IGameOptions Restore(IGameOptions option)
@@ -49,6 +53,9 @@ namespace TownOfHost
             {
                 value.Restore(option);
             }
+            if (spiritGuideCooldown.HasValue && option.TryCast<NormalGameOptionsV12>(out var normalOptions) &&
+                normalOptions.roleOptions.TryGetRoleOptions(RoleTypes.SpiritGuide, out SpiritGuideRoleOptionsV12 roleOptions))
+                roleOptions.SpiritGuideCooldownSeconds = spiritGuideCooldown.Value;
             return option;
         }
 

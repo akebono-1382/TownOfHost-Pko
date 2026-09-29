@@ -1494,6 +1494,7 @@ public enum CustomRoles
     GhostNoiseSender,
     GhostReseter,
     GuardianAngel,
+    Influencer,
     GhostRumour,
     //Pko
     GhostFloodlight,

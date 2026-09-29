@@ -170,7 +170,9 @@ namespace TownOfHost
         public static string GetAllRoleName(this PlayerControl player)
         {
             if (!player) return null;
-            var text = UtilsRoleText.GetRoleName(player.GetCustomRole());
+            var text = TownOfHost.Roles.Vanilla.Influencer.IsDisplayedAsInfluencer(player)
+                ? UtilsRoleText.GetRoleNameData(player.GetCustomRole(), null, CustomRoles.Influencer).text
+                : UtilsRoleText.GetRoleName(player.GetCustomRole());
             text += player.GetSubRoleName();
             return text;
         }
@@ -402,7 +404,7 @@ namespace TownOfHost
         }
         public static PlayerControl TryGetKilltarget(this PlayerControl pc, bool IsOneclick = false)//SNR参考!(((
         {
-            float killdis = NormalGameOptionsV11.KillDistances[Mathf.Clamp(GameManager.Instance.LogicOptions.currentGameOptions.GetInt(Int32OptionNames.KillDistance), 0, 2)];
+            float killdis = NormalGameOptionsV12.KillDistances[Mathf.Clamp(GameManager.Instance.LogicOptions.currentGameOptions.GetInt(Int32OptionNames.KillDistance), 0, 2)];
 
             if (pc.Data.IsDead || pc.inVent) return null;
 
@@ -502,6 +504,8 @@ namespace TownOfHost
         }
         public static string GetRoleDesc(this PlayerControl player, bool InfoLong = false)
         {
+            if (TownOfHost.Roles.Vanilla.Influencer.IsDisplayedAsInfluencer(player))
+                return GetString("InfluencerInfo");
             var roleClass = player.GetRoleClass();
             var role = player.GetCustomRole();
             if (player.Is(CustomRoles.Amnesia))

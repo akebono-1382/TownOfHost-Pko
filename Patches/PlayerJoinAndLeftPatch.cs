@@ -92,7 +92,7 @@ namespace TownOfHost
                 if (AURoleOptions.ShapeshifterCooldown == 0f)
                     AURoleOptions.ShapeshifterCooldown = Main.LastShapeshifterCooldown.Value;
 
-                NormalGameOptionsV11 gameOptions = Main.NormalOptions.TryCast<NormalGameOptionsV11>();
+                NormalGameOptionsV12 gameOptions = Main.NormalOptions.TryCast<NormalGameOptionsV12>();
                 if (Main.NormalOptions.NumImpostors == 0 && GameStates.IsOnlineGame)
                     gameOptions.SetInt(Int32OptionNames.NumImpostors, 1);
 
@@ -105,20 +105,21 @@ namespace TownOfHost
                 gameOptions.RoleOptions.SetRoleRate(RoleTypes.Detective, 0, 0);
                 gameOptions.RoleOptions.SetRoleRate(RoleTypes.Viper, 0, 0);
                 gameOptions.RoleOptions.SetRoleRate(RoleTypes.Judge, 0, 0);//アプデ対応　　　　　　　　　　　　　　　↓これ忘れやすい
-                Main.NormalOptions.roleOptions.TryGetRoleOptions(RoleTypes.GuardianAngel, out GuardianAngelRoleOptionsV11 roleData);
+                if (Main.NormalOptions.roleOptions.TryGetRoleOptions(RoleTypes.GuardianAngel, out GuardianAngelRoleOptionsV12 roleData))
+                    roleData.ProtectionDurationSeconds = 9999999999;
                 gameOptions.SetBool(BoolOptionNames.ConfirmImpostor, false);
                 gameOptions.SetInt(Int32OptionNames.TaskBarMode, 2);
                 if (Main.NormalOptions.MaxPlayers > 15)
                 {
                     Main.NormalOptions.SetInt(Int32OptionNames.MaxPlayers, 15);
                 }
-                roleData.ProtectionDurationSeconds = 9999999999;
                 foreach (var option in OptionItem.AllOptions)
                 {
                     if ((Event.OptionLoad.Contains(option.Name) && !Event.Special) &&
                     (Event.CheckRole(option.CustomRole) is false)) option.SetValue(0);
                 }
                 VanillaOptionHolder.SetVanillaValue();
+                TownOfHost.Roles.Vanilla.Influencer.ApplyOptions();
 
                 if (TaskBattle.IsAllMapMode)
                 {

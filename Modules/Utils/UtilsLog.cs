@@ -105,13 +105,25 @@ namespace TownOfHost
         public static Dictionary<byte, string> LastLogPro = new();
         public static Dictionary<byte, string> LastLogSubRole = new();
         public static Dictionary<byte, string> LastLogLoveRole = new();
+        private static string GetResultRoleName(byte playerId)
+        {
+            var player = GetPlayerById(playerId);
+            var state = PlayerState.GetByPlayerId(playerId);
+            if (state?.GhostRole == CustomRoles.NotAssigned &&
+                (TownOfHost.Roles.Vanilla.Influencer.IsDisplayedAsInfluencer(player) ||
+                 (state.WasInfluencer && (state.IsDead || player?.Data?.IsDead == true))))
+                return GetRoleNameData(state.MainRole, null, CustomRoles.Influencer, false).text;
+
+            return LastLogRole.TryGetValue(playerId, out var roleLog)
+                ? roleLog : GetTrueRoleName(playerId);
+        }
         public static string GetLogtext(byte pc)
         {
             var longestNameByteCount = Main.AllPlayerNames?.Values?.Select(name => name.GetByteCount())?.OrderByDescending(byteCount => byteCount)?.FirstOrDefault() ?? 10;
 
             var name = LastLog.TryGetValue(pc, out var log) ? log : "??";
             var pro = LastLogPro.TryGetValue(pc, out var prog) ? prog : "(??)";
-            var role = LastLogRole.TryGetValue(pc, out var rolelog) ? rolelog : "???";
+            var role = GetResultRoleName(pc);
             var addon = "??";
             addon = LastLogLoveRole.TryGetValue(pc, out var m) ? m : "";
 
@@ -138,9 +150,7 @@ namespace TownOfHost
                 // "回線切断 " = 4.5em
                 pos += DestroyableSingleton<TranslationController>.Instance.currentLanguage.languageID == SupportedLangs.English ? 8.5f : 5f;
                 builder.AppendFormat("<pos={0}em>", pos);
-                var role = GetTrueRoleName(id);
-                if (LastLogRole.ContainsKey(id))
-                    role = LastLogRole[id];
+                var role = GetResultRoleName(id);
                 role = Regex.Replace(role, "<b>", "");
                 role = Regex.Replace(role, "</b>", "");
                 builder.Append(role);

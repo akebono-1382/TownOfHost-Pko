@@ -356,7 +356,7 @@ namespace TownOfHost
                             player.Data.Role.Ability.Image = image;
                             player.Data.Role.InitializeAbilityButton();
                         }
-                        else if (player.Data.Role.Role is RoleTypes.CrewmateGhost or RoleTypes.ImpostorGhost or RoleTypes.GuardianAngel)
+                        else if (player.Data.Role.Role is RoleTypes.CrewmateGhost or RoleTypes.ImpostorGhost or RoleTypes.GuardianAngel or RoleTypes.SpiritGuide)
                         {
                             player.Data.Role.Ability.Image = image;
                             player.Data.Role.InitializeAbilityButton();
@@ -683,7 +683,8 @@ namespace TownOfHost
                     role = CustomRoles.Sheriff;
             }
             // 役職説明表示
-            if (!role.IsVanilla() || player.IsGhostRole())
+            if (!role.IsVanilla() || player.IsGhostRole() ||
+                TownOfHost.Roles.Vanilla.Influencer.IsDisplayedAsInfluencer(player))
             {
                 var RoleWithInfo = $"{UtilsRoleText.GetTrueRoleName(player.PlayerId)}:\r\n";
                 RoleWithInfo += player.GetRoleDesc();

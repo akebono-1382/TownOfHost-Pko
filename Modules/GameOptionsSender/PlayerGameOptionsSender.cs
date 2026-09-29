@@ -32,7 +32,7 @@ namespace TownOfHost.Modules
 
         public IGameOptions cachedGameOptions = null;
         public override IGameOptions BasedGameOptions =>
-            Main.RealOptionsData.Restore(cachedGameOptions ?? (cachedGameOptions = new NormalGameOptionsV11(new UnityLogger().Cast<ILogger>()).Cast<IGameOptions>()));
+            Main.RealOptionsData.Restore(cachedGameOptions ?? (cachedGameOptions = new NormalGameOptionsV12(new UnityLogger().Cast<ILogger>()).Cast<IGameOptions>()));
         public override bool IsDirty { get; protected set; }
 
         public PlayerControl player;
@@ -93,9 +93,12 @@ namespace TownOfHost.Modules
                 var guardancool = opt.GetFloat(FloatOptionNames.GuardianAngelCooldown);
                 var vip = opt.GetFloat(FloatOptionNames.ViperDissolveTime);
                 var jud = opt.GetFloat(FloatOptionNames.JudgeTaskRequirementPercentage);
+                var spiritGuideCooldown = opt.TryCast<NormalGameOptionsV12>(out var normalOptions) &&
+                    normalOptions.roleOptions.TryGetRoleOptions(RoleTypes.SpiritGuide, out SpiritGuideRoleOptionsV12 spiritGuideOptions)
+                    ? spiritGuideOptions.SpiritGuideCooldownSeconds : 0f;
 
                 string NowOption = $"{killCooldown},{killDistance},{impostorLight},{crewLight},{playerSpeed},{numEmergency},{emergencyCooldown},{discussionTime},{votingTime},{anonymousVotes},{numCommonTasks},{numLongTasks},{numShortTasks},{visualTasks},{taskBarMode},{confirmImpostor}";
-                NowOption += $"{engcooldown},{engmaxtime},{scicooldown},{scibattery},{trackercool},{trackerdelay},{tarckduration},{noisealert},{noiseimp},{shapecool},{ShapeshifterDuration},{shapeskin},{phantom},{detective},{vip},{guardancool},{jud}";
+                NowOption += $"{engcooldown},{engmaxtime},{scicooldown},{scibattery},{trackercool},{trackerdelay},{tarckduration},{noisealert},{noiseimp},{shapecool},{ShapeshifterDuration},{shapeskin},{phantom},{detective},{vip},{guardancool},{jud},{spiritGuideCooldown}";
                 if (OldOptionstext == NowOption)//再度送信するならキャンセル
                 {
                     return;

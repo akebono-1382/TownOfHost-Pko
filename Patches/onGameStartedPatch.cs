@@ -24,6 +24,7 @@ namespace TownOfHost
             //注:この時点では役職は設定されていません。
             GameStates.Intro = true;
             Main.NormalOptions.roleOptions.SetRoleRate(RoleTypes.GuardianAngel, 0, 0);
+            TownOfHost.Roles.Vanilla.Influencer.ApplyOptions();
 
             if (Utils.IsRestriction())
             {

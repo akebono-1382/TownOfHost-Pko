@@ -60,7 +60,8 @@ namespace TownOfHost
                 CustomRoles.Shapeshifter or
                 CustomRoles.Phantom or
                 CustomRoles.Viper or
-                CustomRoles.Judge;
+                CustomRoles.Judge or
+                CustomRoles.Influencer;
         }
         public static bool IsAddOn(this CustomRoles roles)
         {

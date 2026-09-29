@@ -274,7 +274,9 @@ namespace TownOfHost
                         if (LastNeutral.GiveWatching.GetBool()) Subrole.Add(CustomRoles.Watching);
                     }
                 }
-            var (color, text) = GetRoleNameData(state.MainRole, Subrole, state.GhostRole, showSubRoleMarks);
+            var displayGhostRole = TownOfHost.Roles.Vanilla.Influencer.IsDisplayedAsInfluencer(player)
+                ? CustomRoles.Influencer : state.GhostRole;
+            var (color, text) = GetRoleNameData(state.MainRole, Subrole, displayGhostRole, showSubRoleMarks);
 
             if (Amnesia.CheckAbility(player))
                 CustomRoleManager.GetByPlayerId(playerId)?.OverrideTrueRoleName(ref color, ref text);

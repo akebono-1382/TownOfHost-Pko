@@ -20,6 +20,9 @@
 "Phantom","Phantom","ファントム"
 "Viper","Viper","バイパー"
 "Judge","Judge","ジャッジ"
+"Influencer","Influencer","インフルエンサー"
+"InfluencerMessageCooldown","Message Cooldown","メッセージクールダウン"
+"InfluencerInfo","Send messages after death.","死亡後にメッセージを送信できる。"
 
 "# 特殊インポスター役職"
 "BountyHunter","Bounty Hunter","バウンティハンター","赏金猎人","賞金獵人","Охотник за головами","Caçador de Recompensas","Caçador de Recompensas"

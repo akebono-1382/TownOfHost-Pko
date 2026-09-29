@@ -663,6 +663,8 @@ namespace TownOfHost
     {
         public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
         {
+            if (__instance.Data?.Role?.Role == RoleTypes.SpiritGuide)
+                return true;
             SoulSlave.UseAbility(__instance, target);
 
             // ゴースト系能力
