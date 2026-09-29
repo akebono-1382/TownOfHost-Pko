@@ -1,5 +1,5 @@
 # Town Of Host-Pko
-
+## こちらはサポーター用のリポジトリです
 ## この Mod について
 
 この Mod は非公式のものであり、この Mod の開発に関して Among Us の開発元である"Innersloth"は一切関与していません。<br>
